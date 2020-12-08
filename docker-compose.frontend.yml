@@ -156,7 +156,7 @@ services:
           - digital
           - digital.docker.container
 
-  zite_worker:
+  digital_worker:
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
@@ -183,8 +183,8 @@ services:
           - digital_worker
           - digital_worker.docker.container
 
-  zite_beat:
-    hostname: zite
+  digital_beat:
+    hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
       - ../kobo-env/envfiles/databases.txt
@@ -201,7 +201,7 @@ services:
       - ./log/digital:/code/logs/
       - ./.vols/digital_media:/code/media/
       - ./sock/:/sock/
-      # Allow access to KoBoCAT media uploads within zite
+      # Allow access to KoBoCAT media uploads within digital profile
       - ./.vols/kobocat_media_uploads:/srv/src/kobocat/media
     restart: on-failure
     networks:
