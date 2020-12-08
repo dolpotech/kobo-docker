@@ -91,9 +91,10 @@ services:
       - ../kobo-env/envfiles/nginx.txt
       - ../kobo-env/envfiles/kobocat.txt
       - ../kobo-env/envfiles/kpi.txt
+      - ../kobo-env/envfiles/digital.txt
     environment:
       - UWSGI_PASS_TIMEOUT=130
-      - TEMPLATED_VAR_REFS=$${PUBLIC_REQUEST_SCHEME} $${INTERNAL_DOMAIN_NAME} $${PUBLIC_DOMAIN_NAME} $${KOBOFORM_PUBLIC_SUBDOMAIN} $${KOBOCAT_PUBLIC_SUBDOMAIN} $${ENKETO_EXPRESS_PUBLIC_SUBDOMAIN}
+      - TEMPLATED_VAR_REFS=$${PUBLIC_REQUEST_SCHEME} $${INTERNAL_DOMAIN_NAME} $${PUBLIC_DOMAIN_NAME} $${KOBOFORM_PUBLIC_SUBDOMAIN} $${KOBOCAT_PUBLIC_SUBDOMAIN} $${ENKETO_EXPRESS_PUBLIC_SUBDOMAIN} $${DIGITAL_PUBLIC_SUBDOMAIN}
     volumes:
         - ./.vols/static:/srv/www:ro
         - ./log/nginx:/var/log/nginx
@@ -126,6 +127,88 @@ services:
       kobo-fe-network:
         aliases:
           - enketo_express
+
+  digital:
+    hostname: digital
+    env_file:
+      - ../kobo-env/envfile.txt
+      - ../kobo-env/envfiles/databases.txt
+      - ../kobo-env/envfiles/external_services.txt
+      - ../kobo-env/envfiles/kpi.txt
+      - ../kobo-env/envfiles/digital.txt
+      - ../kobo-env/envfiles/nginx.txt
+      - ../kobo-env/envfiles/smtp.txt
+      - ../kobo-env/envfiles/aws.txt
+    sysctls:
+      - net.core.somaxconn=2048
+    volumes:
+      - ./.vols/static/digital:/code/static/
+      - ./log/digital:/code/logs/
+      - ./.vols/digital_media:/code/media/
+      - ./sock/:/sock/
+      - ./.vols/kobocat_media_uploads:/srv/src/kobocat/media
+    restart: on-failure
+    ports:
+      - 8000:8000
+    networks:
+      kobo-fe-network:
+        aliases:
+          - digital
+          - digital.docker.container
+
+  zite_worker:
+    hostname: digital
+    env_file:
+      - ../kobo-env/envfile.txt
+      - ../kobo-env/envfiles/databases.txt
+      - ../kobo-env/envfiles/external_services.txt
+      - ../kobo-env/envfiles/kpi.txt
+      - ../kobo-env/envfiles/digital.txt
+      - ../kobo-env/envfiles/nginx.txt
+      - ../kobo-env/envfiles/smtp.txt
+      - ../kobo-env/envfiles/aws.txt
+    sysctls:
+      - net.core.somaxconn=2048
+    volumes:
+      - ./.vols/static/digital:/code/static/
+      - ./log/digital:/code/logs/
+      - ./.vols/digital_media:/code/media/
+      - ./sock/:/sock/
+      # Allow access to KoBoCAT media uploads within digital profile
+      - ./.vols/kobocat_media_uploads:/srv/src/kobocat/media
+    restart: on-failure
+    networks:
+      kobo-fe-network:
+        aliases:
+          - digital_worker
+          - digital_worker.docker.container
+
+  zite_beat:
+    hostname: zite
+    env_file:
+      - ../kobo-env/envfile.txt
+      - ../kobo-env/envfiles/databases.txt
+      - ../kobo-env/envfiles/external_services.txt
+      - ../kobo-env/envfiles/kpi.txt
+      - ../kobo-env/envfiles/digital.txt
+      - ../kobo-env/envfiles/nginx.txt
+      - ../kobo-env/envfiles/smtp.txt
+      - ../kobo-env/envfiles/aws.txt
+    sysctls:
+      - net.core.somaxconn=2048
+    volumes:
+      - ./.vols/static/digital:/code/static/
+      - ./log/digital:/code/logs/
+      - ./.vols/digital_media:/code/media/
+      - ./sock/:/sock/
+      # Allow access to KoBoCAT media uploads within zite
+      - ./.vols/kobocat_media_uploads:/srv/src/kobocat/media
+    restart: on-failure
+    networks:
+      kobo-fe-network:
+        aliases:
+          - digital_beat
+          - digital_beat.docker.container
 
 networks:
   kobo-fe-network:

@@ -64,6 +64,24 @@ services:
         aliases:
           - enketo_express
 
+  digital:
+    networks:
+      kobo-be-network:
+        aliases:
+          - digital
+
+  digital_worker:
+    networks:
+      kobo-be-network:
+        aliases:
+          - digital_worker
+
+  digital_beat:
+    networks:
+      kobo-be-network:
+        aliases:
+          - digital_beat
+
 networks:
   kobo-be-network:
     external:

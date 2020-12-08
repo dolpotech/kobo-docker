@@ -2,6 +2,10 @@
 
 charset     utf-8;
 
+upstream digital_server {
+    server unix:///sock/digital.sock;
+}
+
 # Default configuration
 server {
     listen 80 default_server;
@@ -111,6 +115,37 @@ server {
 
         # Debug proxying directly to container.
         ${kpi_include_proxy_pass}
+    }
+}
+
+# DIGITAL HTTP.
+server {
+    listen 80;
+    #add_header 'Access-Control-Allow-Origin' '*';
+    server_name ${DIGITAL_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME} ${DIGITAL_PUBLIC_SUBDOMAIN}.${INTERNAL_DOMAIN_NAME};
+
+    include /etc/nginx/include.server_directive_common.conf;
+
+    access_log  /var/log/nginx/digital.access.log with_host;
+    error_log   /var/log/nginx/digital.error.log;
+
+    error_page 418 = /static/html/Offline.html;
+
+    location / {
+        # Proxy through uWSGI.
+        #${kpi_include_uwsgi_pass}
+
+        # Debug proxying directly to container.
+        #${kpi_include_proxy_pass}
+        #proxy_pass http://digital:8000;
+        uwsgi_pass digital_server;
+        include uwsgi_params;
+        proxy_set_header Host $host:$proxy_port;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $remote_addr;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_redirect off;
+
     }
 }
 
