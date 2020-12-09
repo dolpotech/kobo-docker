@@ -129,6 +129,7 @@ services:
           - enketo_express
 
   digital:
+    image: docker.pkg.github.com/dolpotech/digitalprofile/digital:v1.0
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
@@ -157,6 +158,7 @@ services:
           - digital.docker.container
 
   digital_worker:
+    image: docker.pkg.github.com/dolpotech/digitalprofile/digital:v1.0
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
@@ -184,6 +186,7 @@ services:
           - digital_worker.docker.container
 
   digital_beat:
+    image: docker.pkg.github.com/dolpotech/digitalprofile/digital:v1.0
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
