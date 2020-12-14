@@ -124,7 +124,7 @@ server {
     #add_header 'Access-Control-Allow-Origin' '*';
     server_name ${DIGITAL_PUBLIC_SUBDOMAIN}.${PUBLIC_DOMAIN_NAME} ${DIGITAL_PUBLIC_SUBDOMAIN}.${INTERNAL_DOMAIN_NAME};
 
-    include /etc/nginx/include.server_directive_common.conf;
+    include /etc/nginx/includes/server_directive_common.conf;
 
     access_log  /var/log/nginx/digital.access.log with_host;
     error_log   /var/log/nginx/digital.error.log;
