@@ -101,6 +101,7 @@ services:
         - ./.vols/kobocat_media_uploads:/media
         - ./nginx/docker-entrypoint.d/30-init-kobo-nginx.sh:/docker-entrypoint.d/30-init-kobo-nginx.sh
         - ./nginx/kobo-docker-scripts/:/kobo-docker-scripts
+        - ./sock/:/sock/
     restart: always
     networks:
       kobo-fe-network:
