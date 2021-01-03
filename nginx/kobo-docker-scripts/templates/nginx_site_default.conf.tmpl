@@ -129,10 +129,6 @@ server {
     access_log  /var/log/nginx/digital.access.log with_host;
     error_log   /var/log/nginx/digital.error.log;
 
-    location /static {
-        alias /src/www/digital;
-    }
-
     location / {
         # Proxy through uWSGI.
         #${kpi_include_uwsgi_pass}
