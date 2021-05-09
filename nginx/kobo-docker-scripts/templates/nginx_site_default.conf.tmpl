@@ -128,7 +128,6 @@ server {
 
     access_log  /var/log/nginx/digital.access.log with_host;
     error_log   /var/log/nginx/digital.error.log;
-    client_max_body_size 2048M;
 
     location / {
         # Proxy through uWSGI.
@@ -173,5 +172,4 @@ server {
         proxy_pass  http://enketo_express:8005/;
         proxy_redirect off;
     }
-    client_max_body_size 2048M;
 }
