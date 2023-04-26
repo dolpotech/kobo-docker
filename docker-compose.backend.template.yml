@@ -37,7 +37,7 @@ services:
     stop_grace_period: 5m
 
   redis_main:
-    image: redis:3.2
+    image: redis:6.2
     env_file:
       - ../kobo-env/envfile.txt
       - ../kobo-env/envfiles/databases.txt
@@ -56,7 +56,7 @@ services:
     command: "bash /tmp/redis/entrypoint.sh"
 
   redis_cache:
-    image: redis:3.2
+    image: redis:6.2
     env_file:
       - ../kobo-env/envfiles/databases.txt
     volumes:
