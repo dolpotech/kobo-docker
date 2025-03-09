@@ -129,6 +129,9 @@ server {
     access_log  /var/log/nginx/digital.access.log with_host;
     error_log   /var/log/nginx/digital.error.log;
 
+    include /etc/nginx/mime.types;  # Ensure MIME types are loaded
+    default_type application/octet-stream; # Default content type
+
     location / {
         # Proxy through uWSGI.
         #${kpi_include_uwsgi_pass}
