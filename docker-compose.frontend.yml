@@ -130,7 +130,7 @@ services:
           - enketo_express
 
   digital:
-    image: ghcr.io/dolpotech/digitalprofile/digital:v1.2
+    image: ghcr.io/dolpotech/digitalprofile/digital:2025.01
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
@@ -159,7 +159,7 @@ services:
           - digital.docker.container
 
   digital_worker:
-    image: ghcr.io/dolpotech/digitalprofile/digital:v1.2
+    image: ghcr.io/dolpotech/digitalprofile/digital:2025.01
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
@@ -187,7 +187,7 @@ services:
           - digital_worker.docker.container
 
   digital_beat:
-    image: ghcr.io/dolpotech/digitalprofile/digital:v1.2
+    image: ghcr.io/dolpotech/digitalprofile/digital:2025.01
     hostname: digital
     env_file:
       - ../kobo-env/envfile.txt
